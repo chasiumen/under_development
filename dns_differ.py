@@ -26,47 +26,24 @@ tar='/bin/tar'
 ####### Directory ######
 git='~/temp/dns_backup/'
 
-
-####### infoblox ######
-#api_user = 'api'
-#api_pass = 'api321'
-#api_host = '128.103.200.3'
-api_user = 'morinor'
-p_hash = 'HASH'
-api_pass = base64.b64decode(p_hash)
-api_host = '128.103.200.106'
-
 ####### github #######
-git_host = 'https://git.noc.harvard.edu/api/v3/'
+git_host = 'https://github.com'
 git_user =''
 gp_hash = 'HASH'
 git_pass = base64.b64decode(gp_hash)
 
 
 #######  SMTP  #######
-smtpserver = 'netop3.harvard.edu'
-subj_prefix = 'DHCP-DIFFER'
-#from_addr = 'root@ibbff.noc.harvard.edu'
-#to_addr = 'DHCP-DIFFER@noc.harvard.edu'
-from_addr = 'root@ibbff.noc.harvard.edu'
+smtpserver = 'smtp.gmail.com'
+port = 588
+
+user = 'rymorino'
+p_hash = 'hash'
+pwd = base64.b64decode(p_hash)
+
+subj_prefix = 'dns-conf'
+from_addr = 'rymorino@gmail.com'
 to_addr = 'rymorino@gmail.com'
-
-
-###### github #######
-git_host = 'https://git.noc.harvard.edu/api/v3/'
-git_user =''
-gp_hash = 'HASH'
-git_pass = base64.b64decode(gp_hash)
-
-
-#######  SMTP  #######
-smtpserver = 'netop3.harvard.edu'
-subj_prefix = 'DHCP-DIFFER'
-#from_addr = 'root@ibbff.noc.harvard.edu'
-#to_addr = 'DHCP-DIFFER@noc.harvard.edu'
-from_addr = 'root@ibbff.noc.harvard.edu'
-to_addr = 'rymorino@gmail.com'
-
 
 
 #---------------------FUNCTION-----------------------
@@ -86,8 +63,10 @@ def mailer(from_addr, to_addr, subject, text) :
     #send mail
     try:
         server = smtplib.SMTP(smtpserver, timeout=5)
-        server.ehlo()
+		server.connect()
+        server.ehlo(smtp_server, port)
         server.starttls()
+		server.login(user,pwd))
 #       server.sendmail(from_addr, to_addr, msg.as_string())
     except smtplib.SMTPException:
         print "Error! Unable to send mail"
